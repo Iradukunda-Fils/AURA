@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/WEB-INF/templates/mainLayout.xhtml">
+    <ui:define name="title">AURA - Optimization Run History</ui:define>
+
+    <ui:define name="pageTitle">Run History &amp; Explainability Audit</ui:define>
+
+    <ui:define name="content">
+        <!-- Hero Section -->
+        <div class="hero-banner">
+            <h1 class="hero-title">📋 Optimization Execution Runs &amp; Audit Trail</h1>
+            <p class="hero-subtitle">Historical log of all heuristic allocation simulation runs, policy configurations, global utility score evaluations, and live schedule commitment status.</p>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid-4 mb-3">
+            <div class="card metric-card">
+                <div class="metric-label">Execution History</div>
+                <div class="metric-value">#{adminBean.runHistory.size()}</div>
+                <div class="metric-trend text-success">Runs Tracked</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Latest Utility Score</div>
+                <div class="metric-value text-accent">
+                    <h:outputText value="#{adminBean.activeRun != null ? adminBean.activeRun.globalScore : 0.0}">
+                        <f:convertNumber pattern="#0.00"/>
+                    </h:outputText>
+                </div>
+                <div class="metric-trend text-accent">Score out of 100.0</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Active Strategy</div>
+                <div class="metric-value text-warning">Greedy</div>
+                <div class="metric-trend">Priority-based solver</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Policy Model</div>
+                <div class="metric-value">v1.0</div>
+                <div class="metric-trend text-success">Active Weight Policy</div>
+            </div>
+        </div>
+
+        <!-- Execution History Table -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Historical Execution Log</h3>
+                <span class="badge badge-accent">Immutable Audit Log</span>
+            </div>
+            <div class="table-responsive">
+                <h:dataTable value="#{adminBean.runHistory}" var="run" styleClass="table">
+                    <h:column>
+                        <f:facet name="header">Run ID</f:facet>
+                        <code class="text-accent font-weight-bold">#{run.runId}</code>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Execution Time</f:facet>
+                        <span class="text-muted" style="font-size:0.75rem;">#{run.executedAt}</span>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Triggered By</f:facet>
+                        <span class="badge badge-neutral">#{run.executedBy}</span>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Decisions / Feasible</f:facet>
+                        <span class="font-weight-bold">#{run.decisions.size()}</span> proposed
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Global Score</f:facet>
+                        <span class="font-weight-bold text-accent">
+                            <h:outputText value="#{run.globalScore}">
+                                <f:convertNumber pattern="#0.00"/>
+                            </h:outputText>
+                        </span>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Lifecycle State</f:facet>
+                        <span class="badge #{run.status == 'COMMITTED' ? 'badge-accent' : 'badge-warning'}">
+                            #{run.status}
+                        </span>
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

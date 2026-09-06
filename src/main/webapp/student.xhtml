@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainLayout.xhtml">
+
+    <ui:define name="title">AURA - Schedule Explorer</ui:define>
+
+    <ui:define name="content">
+        <!-- Search Controls -->
+        <div class="card mb-md">
+            <div class="card-title">🔍 Search Schedules &amp; Room Timetables</div>
+
+            <h:form id="searchForm">
+                <div class="search-bar">
+                    <div class="form-group" style="flex: 2;">
+                        <label class="form-label">Course Code, Title, or Room</label>
+                        <h:inputText value="#{studentBean.searchQuery}" styleClass="form-control"/>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Campus Filter</label>
+                        <h:selectOneMenu value="#{studentBean.selectedCampusFilter}" styleClass="form-control">
+                            <f:selectItem itemValue="ALL" itemLabel="All Campuses"/>
+                            <f:selectItem itemValue="MASORO" itemLabel="Masoro Main"/>
+                            <f:selectItem itemValue="GISHUSHU" itemLabel="Gishushu"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <h:commandButton value="Search" styleClass="btn btn-primary"/>
+                </div>
+            </h:form>
+        </div>
+
+        <!-- Committed Allocations Table -->
+        <div class="card">
+            <div class="card-title">
+                📅 Active Committed Allocations (#{studentBean.filteredAllocations.size()})
+            </div>
+
+            <h:panelGroup rendered="#{empty studentBean.filteredAllocations}">
+                <p class="text-secondary" style="padding: 1rem; text-align: center; font-size: 0.8rem;">
+                    No active committed allocations found. Visit the
+                    <a href="admin.xhtml" class="text-accent">Optimization Console</a>
+                    to commit simulation passes.
+                </p>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty studentBean.filteredAllocations}">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Allocation</th>
+                                <th>Run</th>
+                                <th>Activity</th>
+                                <th>Resources</th>
+                                <th>Campus</th>
+                                <th>Time</th>
+                                <th>Committed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{studentBean.filteredAllocations}" var="alloc">
+                                <tr>
+                                    <td><code>#{alloc.id}</code></td>
+                                    <td class="text-secondary">#{alloc.runId}</td>
+                                    <td class="fw-bold">#{alloc.activityId}</td>
+                                    <td><span class="badge badge-success">#{alloc.resourceIds}</span></td>
+                                    <td class="text-secondary">#{alloc.siteId}</td>
+                                    <td class="fw-bold">#{alloc.timeSlot}</td>
+                                    <td class="text-secondary">#{alloc.committedAt}</td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                </div>
+            </h:panelGroup>
+        </div>
+    </ui:define>
+
+</ui:composition>

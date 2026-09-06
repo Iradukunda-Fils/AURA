@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title><ui:insert name="title">AURA - AUCA Resource Optimization</ui:insert></title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="AURA - Constraint-aware institutional resource allocation platform for AUCA"/>
+    <h:outputStylesheet name="css/style.css"/>
+</h:head>
+<h:body>
+    <div class="app-layout" id="appLayout">
+
+        <!-- Collapsible Sidebar Navigation -->
+        <ui:include src="/WEB-INF/components/sidebar.xhtml"/>
+
+        <!-- Main Content Area -->
+        <div class="main-content" id="mainContent">
+            <ui:include src="/WEB-INF/components/topbar.xhtml"/>
+
+            <main class="container">
+                <ui:insert name="content">
+                    <!-- Page specific modular content insert -->
+                </ui:insert>
+            </main>
+
+            <ui:include src="/WEB-INF/components/footer.xhtml"/>
+        </div>
+    </div>
+
+    <script>
+    //<![CDATA[
+    (function() {
+        var sidebar = document.getElementById('sidebar');
+        var mainContent = document.getElementById('mainContent');
+        var toggle = document.getElementById('sidebarToggle');
+        var backdrop = document.getElementById('sidebarBackdrop');
+        var isMobile = window.innerWidth <= 768;
+
+        // On mobile, start collapsed
+        if (isMobile && sidebar) {
+            sidebar.classList.add('collapsed');
+        }
+
+        if (toggle) {
+            toggle.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('sidebar-collapsed');
+                if (isMobile) {
+                    backdrop.classList.toggle('visible');
+                }
+            });
+        }
+
+        if (backdrop) {
+            backdrop.addEventListener('click', function() {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+                backdrop.classList.remove('visible');
+            });
+        }
+
+        // Highlight active nav item based on current page
+        var currentPage = window.location.pathname.split('/').pop() || 'index.xhtml';
+        var navItems = document.querySelectorAll('.sidebar-nav-item');
+        for (var i = 0; i < navItems.length; i++) {
+            if (navItems[i].getAttribute('href') === currentPage) {
+                navItems[i].classList.add('active');
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            isMobile = window.innerWidth <= 768;
+            if (!isMobile) {
+                backdrop.classList.remove('visible');
+            }
+        });
+    })();
+    //]]>
+    </script>
+</h:body>
+</html>

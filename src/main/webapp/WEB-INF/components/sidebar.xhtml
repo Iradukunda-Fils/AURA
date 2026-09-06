@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <a href="index.xhtml" class="sidebar-brand">
+                <span class="sidebar-brand-icon">⚡</span>
+                <span class="sidebar-brand-text">AURA</span>
+            </a>
+            <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Toggle navigation">
+                <span class="toggle-bar"></span>
+                <span class="toggle-bar"></span>
+                <span class="toggle-bar"></span>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-label">Main</span>
+                <a href="index.xhtml" class="sidebar-nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="admin.xhtml" class="sidebar-nav-item">
+                    <span class="nav-icon">🎛️</span>
+                    <span class="nav-text">Optimization Console</span>
+                </a>
+                <a href="student.xhtml" class="sidebar-nav-item">
+                    <span class="nav-icon">📅</span>
+                    <span class="nav-text">Schedule Explorer</span>
+                </a>
+            </div>
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-label">Management</span>
+                <a href="rooms.xhtml" class="sidebar-nav-item">
+                    <span class="nav-icon">🏫</span>
+                    <span class="nav-text">Room Registry</span>
+                </a>
+                <a href="courses.xhtml" class="sidebar-nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">Course Catalog</span>
+                </a>
+                <a href="lecturers.xhtml" class="sidebar-nav-item">
+                    <span class="nav-icon">👨‍🏫</span>
+                    <span class="nav-text">Faculty Directory</span>
+                </a>
+            </div>
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-label">System</span>
+                <a href="runs.xhtml" class="sidebar-nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">Run History</span>
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-badge">AUCA Core v1.0</div>
+        </div>
+    </aside>
+</ui:composition>

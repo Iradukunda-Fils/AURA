@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/WEB-INF/templates/mainLayout.xhtml">
+    <ui:define name="title">AURA - Faculty &amp; Cohorts Directory</ui:define>
+
+    <ui:define name="pageTitle">Faculty &amp; Student Cohorts</ui:define>
+
+    <ui:define name="content">
+        <!-- Hero Section -->
+        <div class="hero-banner">
+            <h1 class="hero-title">👨‍🏫 Faculty Directory &amp; Student Cohort Registry</h1>
+            <p class="hero-subtitle">Academic staff assignments, email contacts, department affiliations, and student cohort sizing for timetable conflict prevention.</p>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid-4 mb-3">
+            <div class="card metric-card">
+                <div class="metric-label">Academic Faculty</div>
+                <div class="metric-value">5</div>
+                <div class="metric-trend text-success">Full-time Staff</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Academic Departments</div>
+                <div class="metric-value text-accent">2</div>
+                <div class="metric-trend text-accent">CS &amp; Business</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Active Student Cohorts</div>
+                <div class="metric-value text-warning">4</div>
+                <div class="metric-trend">Years 2 - 4</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Enrolled Students</div>
+                <div class="metric-value">183</div>
+                <div class="metric-trend text-success">Active Enrollees</div>
+            </div>
+        </div>
+
+        <!-- Layout Grid: Faculty Table & Cohorts Table -->
+        <div class="grid-2">
+            <!-- Faculty Directory -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Academic Faculty Staff</h3>
+                    <span class="badge badge-accent">Staff Registry</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Staff ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>ST_001</code></td>
+                                <td><strong>Dr. Eric Niyomugabo</strong></td>
+                                <td class="text-muted" style="font-size:0.75rem;">eric.n@auca.ac.rw</td>
+                                <td><span class="badge badge-neutral">CS &amp; IT</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>ST_002</code></td>
+                                <td><strong>Prof. Jean Pierre</strong></td>
+                                <td class="text-muted" style="font-size:0.75rem;">jean.p@auca.ac.rw</td>
+                                <td><span class="badge badge-neutral">CS &amp; IT</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>ST_003</code></td>
+                                <td><strong>Ms. Alice Umutoni</strong></td>
+                                <td class="text-muted" style="font-size:0.75rem;">alice.u@auca.ac.rw</td>
+                                <td><span class="badge badge-neutral">CS &amp; IT</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>ST_004</code></td>
+                                <td><strong>Dr. Clementine Mukamana</strong></td>
+                                <td class="text-muted" style="font-size:0.75rem;">clementine.m@auca.ac.rw</td>
+                                <td><span class="badge badge-neutral">CS &amp; IT</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>ST_005</code></td>
+                                <td><strong>Prof. Emmanuel Habimana</strong></td>
+                                <td class="text-muted" style="font-size:0.75rem;">emmanuel.h@auca.ac.rw</td>
+                                <td><span class="badge badge-warning">Business</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Student Cohorts Directory -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Student Cohorts</h3>
+                    <span class="badge badge-neutral">Sizing Registry</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Cohort ID</th>
+                                <th>Cohort Name</th>
+                                <th>Program</th>
+                                <th>Students</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>COHORT_2026_BSSE3</code></td>
+                                <td><strong>BSSE Year 3 - Sec A</strong></td>
+                                <td>Software Engineering</td>
+                                <td><span class="badge badge-accent">42 Students</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>COHORT_2026_BSSE4</code></td>
+                                <td><strong>BSSE Year 4 - Sec A</strong></td>
+                                <td>Software Engineering</td>
+                                <td><span class="badge badge-accent">48 Students</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>COHORT_2026_BSIT2</code></td>
+                                <td><strong>BSIT Year 2 - Sec B</strong></td>
+                                <td>Information Technology</td>
+                                <td><span class="badge badge-accent">55 Students</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>COHORT_2026_BSBIS3</code></td>
+                                <td><strong>BSBIS Year 3 - Sec A</strong></td>
+                                <td>Business Info Systems</td>
+                                <td><span class="badge badge-accent">38 Students</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

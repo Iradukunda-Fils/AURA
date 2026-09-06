@@ -1,0 +1,52 @@
+name: aura-system
+
+services:
+  # ==========================================
+  # AURA Web Application (Jakarta EE / Tomcat)
+  # ==========================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aura-app
+    ports:
+      - "80:8080" # Map host port 80 to Tomcat port 8080
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/auradb
+      - DB_USER=aura
+      - DB_PASSWORD=aurapassword
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ==========================================
+  # Database Service (PostgreSQL)
+  # ==========================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: aura-postgres
+    environment:
+      POSTGRES_DB: auradb
+      POSTGRES_USER: aura
+      POSTGRES_PASSWORD: aurapassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aura -d auradb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local

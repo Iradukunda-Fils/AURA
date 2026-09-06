@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainLayout.xhtml">
+
+    <ui:define name="title">AURA - Executive Dashboard</ui:define>
+
+    <ui:define name="content">
+        <div class="hero-banner">
+            <h1 class="hero-title">Resource Allocation &amp; Optimization System</h1>
+            <p class="hero-subtitle">
+                Constraint-aware institutional decision platform for AUCA.
+                Deterministic allocation engine enforcing zero double-booking, capacity limits, and multi-objective soft scoring.
+            </p>
+        </div>
+
+        <!-- KPI Metrics Row -->
+        <div class="grid-4 mb-md">
+            <div class="card">
+                <div class="card-title">Campus Sites</div>
+                <div class="metric-value">2</div>
+                <div class="metric-label">Masoro Main &amp; Gishushu</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Managed Rooms</div>
+                <div class="metric-value">#{adminBean.allocationService.registeredResources.size()}</div>
+                <div class="metric-label">Labs, Lecture Halls &amp; Classrooms</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Pending Activities</div>
+                <div class="metric-value">#{adminBean.allocationService.pendingActivities.size()}</div>
+                <div class="metric-label">Courses &amp; Exam Slots</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Active Allocations</div>
+                <div class="metric-value">#{adminBean.committedAllocations.size()}</div>
+                <div class="metric-label">Committed Live Schedules</div>
+            </div>
+        </div>
+
+        <!-- Data Tables Row -->
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">
+                    <span>⚡ Institutional Resources</span>
+                    <a href="admin.xhtml" class="btn btn-secondary btn-sm">Run Pass</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Room ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Capacity</th>
+                                <th>Site</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{adminBean.allocationService.registeredResources}" var="res">
+                                <tr>
+                                    <td><code>#{res.id}</code></td>
+                                    <td class="fw-bold">#{res.name}</td>
+                                    <td><span class="badge badge-info">#{res.type}</span></td>
+                                    <td>#{res.capacity}</td>
+                                    <td class="text-secondary">#{res.siteId}</td>
+                                    <td><span class="badge badge-success">#{res.status}</span></td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span>📚 Pending Academic Activities</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Students</th>
+                                <th>Site</th>
+                                <th>State</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{adminBean.allocationService.pendingActivities}" var="act">
+                                <tr>
+                                    <td><code>#{act.id}</code></td>
+                                    <td class="fw-bold">#{act.title}</td>
+                                    <td><span class="badge badge-warning">#{act.activityType}</span></td>
+                                    <td>#{act.studentCount}</td>
+                                    <td class="text-secondary">#{act.preferredSiteId}</td>
+                                    <td><span class="badge badge-info">#{act.state}</span></td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,160 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainLayout.xhtml">
+
+    <ui:define name="title">AURA - Optimization Console</ui:define>
+
+    <ui:define name="content">
+        <h:form id="consoleForm">
+
+            <!-- System Status Banner -->
+            <h:panelGroup layout="block" rendered="#{not empty adminBean.statusMessage}" styleClass="status-banner">
+                <div>
+                    <strong class="text-accent">⚡ System:</strong> #{adminBean.statusMessage}
+                </div>
+                <span class="badge badge-info">#{adminBean.currentRunId}</span>
+            </h:panelGroup>
+
+            <!-- Optimization Controls & Decision View -->
+            <div class="card mb-md">
+                <div class="card-title">
+                    <span>🎛️ Optimization &amp; Allocation Console</span>
+                    <div class="flex-between gap-sm">
+                        <h:commandButton value="Commit Run" action="#{adminBean.commitRun}" styleClass="btn btn-success btn-sm"/>
+                        <h:commandButton value="Reset Data" action="#{adminBean.resetDemoData}" styleClass="btn btn-secondary btn-sm"/>
+                    </div>
+                </div>
+
+                <div class="grid-3 mt-sm">
+                    <!-- Weight Policy Controls -->
+                    <div class="card-inner">
+                        <div class="card-title">⚙️ Policy Weights</div>
+
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span>Continuity</span>
+                                <strong class="text-accent">#{adminBean.weightContinuity}</strong>
+                            </div>
+                            <h:inputText value="#{adminBean.weightContinuity}" styleClass="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span>Proximity</span>
+                                <strong class="text-accent">#{adminBean.weightProximity}</strong>
+                            </div>
+                            <h:inputText value="#{adminBean.weightProximity}" styleClass="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span>Utilization</span>
+                                <strong class="text-accent">#{adminBean.weightUtilization}</strong>
+                            </div>
+                            <h:inputText value="#{adminBean.weightUtilization}" styleClass="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span>Preference</span>
+                                <strong class="text-accent">#{adminBean.weightPreference}</strong>
+                            </div>
+                            <h:inputText value="#{adminBean.weightPreference}" styleClass="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span>Load Balance</span>
+                                <strong class="text-accent">#{adminBean.weightLoadBalance}</strong>
+                            </div>
+                            <h:inputText value="#{adminBean.weightLoadBalance}" styleClass="form-control"/>
+                        </div>
+
+                        <h:commandButton value="Run Optimization Pass" action="#{adminBean.runOptimizationSimulation}" styleClass="btn btn-primary" style="width: 100%;"/>
+                    </div>
+
+                    <!-- Decision Results Table (spans 2 columns) -->
+                    <div class="card-inner" style="grid-column: span 2;">
+                        <div class="card-title">
+                            <span>🚀 Proposed Decisions (#{adminBean.activeRun.decisions.size()})</span>
+                            <span class="badge badge-success">#{adminBean.activeRun.status}</span>
+                        </div>
+
+                        <div class="run-meta">
+                            <div>By: <strong>#{adminBean.activeRun.executedBy}</strong></div>
+                            <div>At: <strong>#{adminBean.activeRun.executedAt}</strong></div>
+                            <div>Policy: <strong>#{adminBean.activeRun.policyVersion}</strong></div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Activity</th>
+                                        <th>Room</th>
+                                        <th>Campus</th>
+                                        <th>Time Slot</th>
+                                        <th>Status</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{adminBean.activeRun.decisions}" var="decision">
+                                        <tr>
+                                            <td><code>#{decision.activityId}</code></td>
+                                            <td><span class="badge badge-info">#{decision.selectedResourceId}</span></td>
+                                            <td class="text-secondary">#{decision.selectedSiteId}</td>
+                                            <td>#{decision.selectedTimeSlot}</td>
+                                            <td><span class="badge #{decision.feasible ? 'badge-success' : 'badge-danger'}">#{decision.feasible ? 'FEASIBLE' : 'INFEASIBLE'}</span></td>
+                                            <td class="text-success fw-bold">#{decision.score} pts</td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explainability Audit Tree -->
+            <div class="card">
+                <div class="card-title">
+                    <span>🔍 Allocation Engine Explainability Audit</span>
+                    <span class="text-secondary" style="font-size: 0.7rem; font-weight: 400;">Deterministic Decision Trace</span>
+                </div>
+                <p class="text-secondary mb-sm" style="font-size: 0.75rem;">
+                    Transparent explainability logs from <code>ExplainabilityEngine</code> — candidate evaluations, hard constraint validations, and soft score calculations.
+                </p>
+
+                <div class="explainability-box">
+                    <ui:repeat value="#{adminBean.activeRun.decisions}" var="decision">
+                        <div class="log-entry">
+                            <div style="font-weight: bold; color: var(--accent-primary); margin-bottom: 0.2rem;">
+                                📌 [DECISION] Activity: #{decision.activityId}
+                            </div>
+                            <div style="margin-left: 0.75rem;">
+                                <div>Explanation: <em style="color: var(--text-primary);">#{decision.humanExplanation}</em></div>
+                                <div class="mt-sm text-secondary">
+                                    Scores:
+                                    <span class="log-score">C:#{decision.scoreBreakdown.continuityScore}</span> |
+                                    <span class="log-score">P:#{decision.scoreBreakdown.proximityScore}</span> |
+                                    <span class="log-score">U:#{decision.scoreBreakdown.utilizationScore}</span> |
+                                    <span class="log-score">Pref:#{decision.scoreBreakdown.preferenceScore}</span> |
+                                    <span class="log-score">LB:#{decision.scoreBreakdown.loadBalanceScore}</span>
+                                </div>
+                                <h:panelGroup rendered="#{not empty decision.rejectedAlternatives}">
+                                    <div class="mt-sm text-muted">
+                                        Rejected (#{decision.rejectedAlternatives.size()}): #{decision.rejectedAlternatives}
+                                    </div>
+                                </h:panelGroup>
+                                <div class="mt-sm text-success fw-bold">
+                                    ✔ OPTIMAL: #{decision.selectedResourceId} (#{decision.selectedTimeSlot}) [#{decision.score} pts]
+                                </div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>
